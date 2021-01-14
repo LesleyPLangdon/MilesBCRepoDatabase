@@ -1,0 +1,57 @@
+CREATE DATABASE taverns;
+
+DROP TABLE IF EXISTS Location;
+CREATE TABLE Location(ID INT IDENTITY(1,1), StreetAdd varchar(25), City varchar(25), State varchar(2), Zip INT);
+INSERT INTO Location(StreetAdd, City, State, Zip) VALUES("123 Main St", "Akron", "OH", 44306);
+INSERT INTO Location(StreetAdd, City, State, Zip) VALUES("73 S Central", "NYC", "NY", 10001);
+INSERT INTO Location(StreetAdd, City, State, Zip) VALUES("1002 Jones Blvd", "Uptown", "AZ", 37495);
+INSERT INTO Location(StreetAdd, City, State, Zip) VALUES("348 Route 38", "Moorestown", "NJ", 08057);
+INSERT INTO Location(StreetAdd, City, State, Zip) VALUES("742 South St", "Philadelphia", "PA", 19082);
+
+DROP TABLE IF EXISTS Role;
+CREATE TABLE Role(ID INT IDENTITY(1,1), Name varchar(10));
+INSERT INTO Role(Name) VALUES ("Owner"), ("Manager"), ("Cook"), ("Server"), ("Guest");
+
+DROP TABLE IF EXISTS Status;
+CREATE TABLE Status(ID INT IDENTITY(1,1), Name varchar(250));
+INSERT INTO Status(Name) VALUES ("Active"), ("Inactive"), ("Promotion");
+
+DROP TABLE IF EXISTS Services;
+CREATE TABLE Services(ID INT IDENTITY(1,1), Name varchar(250), StatusID INT);
+INSERT INTO Services(Name, StatusID) VALUES ("Pool", 1), ("AirHockey", 1), ("AxeThrowing", 2), ("HappyHour", 3), ("Painting", 3);
+
+DROP TABLE IF EXISTS User;
+CREATE TABLE User(ID INT IDENTITY(1,1), Name varchar(25), RoleID INT);
+INSERT INTO User(Name, RoleID) VALUES ("Joe Jones", 1), ("Sally Smith", 1), ("Alex Ashe", 5), ("Brad Black", 5), ("Dave Davis", 5);
+
+DROP TABLE IF EXISTS Tavern;
+CREATE TABLE Tavern(ID INT IDENTITY(1,1), TavernName varchar(250), LocationID INT, Floors INT, OwnerID INT, ServiceID INT);
+INSERT INTO Tavern(TavernName, LocationID, Floors, OwnerID, ServiceID) VALUES ("Joe's Ale House", 1, 3, 1, 2); 
+INSERT INTO Tavern(TavernName, LocationID, Floors, OwnerID, ServiceID) VALUES ("Joe's Ale House", 2, 2, 1, 2);
+INSERT INTO Tavern(TavernName, LocationID, Floors, OwnerID, ServiceID) VALUES ("Sally's Sandwiches", 3, 1, 2, 4);
+INSERT INTO Tavern(TavernName, LocationID, Floors, OwnerID, ServiceID) VALUES ("Smith's Steaks", 4, 2, 2, 1);
+INSERT INTO Tavern(TavernName, LocationID, Floors, OwnerID, ServiceID) VALUES ("Jones' Juice Bar", 5, 1, 1, 5);
+
+DROP TABLE IF EXISTS Rats;
+CREATE TABLE Rats(ID INT IDENTITY(1,1), Name varchar(25), TavernID INT);
+INSERT INTO Rats (Name, TavernID) VALUES ("Jaq", 1), ("Gus", 1), ("Mickey", 3), ("Minnie", 3), ("Remy", 2);
+
+DROP TABLE IF EXISTS Supplies;
+CREATE TABLE Supplies(ID INT IDENTITY(1,1), Name varchar(25), Unit varchar(25));
+INSERT INTO Supplies(Name, Unit) VALUES ("Heineken", "12 oz Bottle"), 
+("Ground Beef" "Pound"), ("Pepsi", "BIB"), ("Pepsi", "16oz Bottle"), ("Cod", "Pound");
+
+DROP TABLE IF EXISTS Inventory;
+CREATE TABLE Inventory(ID INT IDENTITY(1,1), SupplyID INT, TavernID INT, Date DATE, Count FLOAT);
+INSERT INTO Inventory (SupplyID, TavernID, Date, Count) VALUES (1, 1, "2021-01-10", 72),
+(2, 1, "2021-01-10", 40), (4, 1, "2021-01-10", 44), (5, 1, "2021-01-10", 14), (2,3,"2021-01-10", 60), (3, 3, "2021-01-10", 1.3);
+
+DROP TABLE IF EXISTS Receivables;
+CREATE TABLE Receivables(ID INT IDENTITY(1,1), SupplyID INT, TavernID INT, Cost FLOAT, Quantitiy FLOAT, DateReceived DATE);
+INSERT INTO Receivables(SupplyID, TavernID, Cost, Quantitiy, DateReceived) VALUES (1, 1, "2021-01-14", 24),
+(1, 2, "2021-01-14", 48), (2, 3, "2021-01-14", 60), (5, 2, "2021-01-14", 26), (3, 3, "2021-01-14", 2);
+
+DROP TABLE IF EXISTS Sales;
+CREATE TABLE ServiceSales(ID INT IDENTITY(1,1), ServiceID INT, TavernID INT, UserID INT, Price FLOAT, Date DATE, Quantitiy INT);
+INSERT INTO ServiceSales(ServiceID, TavernID, UserID, Price, Date, Quantitiy) VALUES(2, 1, 3, 7.95, "2021-01-6", 2), 
+(2, 2, 3, 7.95, "2021-01-8", 1), (4, 3, 3, 24.95, "2021-01-6", 4), (1, 4, 5, 12.00, "2021-01-10" 6), (5, 5, 5, 9.95, "2021-01-11", 3);
