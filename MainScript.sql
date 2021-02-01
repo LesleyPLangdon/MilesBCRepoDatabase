@@ -79,6 +79,8 @@ DROP TABLE IF EXISTS Guest
 CREATE TABLE Guest(ID INT IDENTITY(1,1), Name varchar(50), Birthday DATE, Cakeday DATE, StatusID INT, Notes varchar(250), PRIMARY KEY(ID));
 ALTER TABLE Guest ADD FOREIGN KEY (StatusID) References GuestStatus(ID);
 
+
+
 DROP TABLE IF EXISTS Level;
 CREATE TABLE Level(ID INT IDENTITY(1,1), Level INT, ClassID INT, GuestID INT, PRIMARY KEY(ID));
 ALTER TABLE Level ADD FOREIGN KEY (ClassID) References Class(ID);
@@ -95,8 +97,16 @@ INSERT INTO Guest (Name, Birthday, Cakeday, StatusID, Notes) VALUES
 	('Joe', '1987-04-27', '2015-12-07', 2, 'Prefers drinks super cold and food super hot'),
 	('Jane', '1998-10-06', '2018-03-12', 3, 'Won Karaoke'),
 	('Juan', '1994-10-16', '2019-05-07', 1, 'Fan of painting nights'),
-	('Erich', '1967-08-12', '2018-11-09', 5, 'We owe a complementary meal');
-	/*('Janice', '1990-09-07', '2017-12-12', 7, '');*/
+	('Erich', '1967-08-12', '2018-11-09', 5, 'We owe a complementary meal'),
+	('Janice', '1990-09-07', '2017-12-12', 4, 'None');
+
+INSERT INTO Guest (Name, Birthday, Cakeday, StatusID, Notes) VALUES
+	('Sally', '1974-03-22', '2020-03-22', 2, 'VIP Birthday treatment'),
+	('Oliver', '1980-01-14', '2016-07-08', 3, 'Former employee of Joes ale House');
+
+INSERT INTO Level (Level, ClassID, GuestID) VALUES
+	(11, 1, 1002), (6, 5, 1002), (3, 2, 1002), (7, 3, 1003), (2, 1, 1003), (12, 4, 1004);
 	
 INSERT INTO Level (Level, ClassID, GuestID) VALUES
 	(4, 1, 1), (2, 2, 2), (1, 3, 4);
+SELECT * FROM Guest;

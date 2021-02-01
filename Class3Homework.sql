@@ -46,10 +46,13 @@ UNION ALL
 SELECT * FROM Class;
 
 /*8. Write a query that returns Guest Classes with Levels and Generate a new column with a label for their level grouping (lvl 1-10, 10-20, etc)*/
-
-
+SELECT * FROM Level;
+SELECT (CASE WHEN [Level] = 1 THEN 'Novice'
+WHEN [Level] > 1 and [Level] < 5 THEN 'Intermediate'
+ELSE 'Expert' END) AS ClassLevel, * FROM [Level];
 /*9. Write a series of INSERT commands that will insert the statuses of one table into another of your choosing using SELECT statements */
-
+select sysObj.name, sysCol.name, *
+from sys.objects sysObj inner join sys.columns sysCol on sysObj.object_id = sysCol.object_id
 
 SELECT * FROM dbo.Level;
 

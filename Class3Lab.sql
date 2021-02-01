@@ -1,4 +1,4 @@
-USE taverns;
+USE MilesBootCamp;
 select CONCAT('CREATE TABLE',' ', 'Taverns', ' (')
 UNION ALL
 select CONCAT(COLUMN_NAME, ' ', DATA_TYPE, ',')
