@@ -30,12 +30,16 @@ SELECT TOP 10 FROM ;
 	('Oliver', '1980-01-14', '2016-07-08', 3, 'Former employee of Joes ale House');
 
 INSERT INTO Level (Level, ClassID, GuestID) VALUES
-	(11, 1, 1002), (6, 5, 1002), (3, 2, 1002), (7, 3, 1003), (2, 1, 1003), (12, 4, 1004);*/
+	(11, 1, 1002), (6, 5, 1002), (3, 2, 1002), (7, 3, 1003), (2, 1, 1003), (12, 4, 1004);
 
 SELECT (Guest.Name), COUNT(Guest.Name), (Class.Class), (Level.Level) FROM Guest 
 LEFT JOIN Level ON (Guest.ID = Level.GuestID)
 LEFT JOIN Class ON (Level.ClassID = Class.ID)
-GROUP BY Guest.Name HAVING COUNT(Name)>1;
+GROUP BY Guest.Name HAVING COUNT(Name)>1;*/
+SELECT (Name), COUNT(Name), (Level.Level) FROM Guest
+JOIN Level ON (Guest.ID = Level.GuestID)
+HAVING COUNT(Name) > 1;
+
 
 SELECT 
 
