@@ -1,31 +1,34 @@
 use MilesBootcamp;
+SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE;
+SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS;
+/*Class 4 first lab step by step*/
 SELECT (Name), (Class.Class), (Level.Level),
 	(CASE WHEN [Level] = 1 THEN 'Novice'
 	WHEN [Level] > 1 and [Level] < 5 THEN 'Intermediate'
 	ELSE 'Expert' END) AS ClassLevel FROM Guest
-LEFT JOIN Level ON (Guest.ID = Level.GuestID)
-LEFT JOIN Class ON (Level.ClassID = Class.ID)
+INNER JOIN Level ON (Guest.ID = Level.GuestID)
+INNER JOIN Class ON (Level.ClassID = Class.ID)
 ORDER BY Name ASC;
 
 SELECT (Name), (Class.Class), (Level.Level),
 	(CASE WHEN [Level] = 1 THEN 'Novice'
 	WHEN [Level] > 1 and [Level] < 5 THEN 'Intermediate'
 	ELSE 'Expert' END) AS ClassLevel FROM Guest
-LEFT JOIN Level ON (Guest.ID = Level.GuestID)
-LEFT JOIN Class ON (Level.ClassID = Class.ID)
+INNER JOIN Level ON (Guest.ID = Level.GuestID)
+INNER JOIN Class ON (Level.ClassID = Class.ID)
 WHERE Level >5
 ORDER BY Name ASC;
 
-SELECT (Name), (Class.Class), (Level.Level),
+SELECT Name, Class.Class, Level.Level,
 	(CASE WHEN [Level] = 1 THEN 'Novice'
 	WHEN [Level] > 1 and [Level] < 5 THEN 'Intermediate'
 	ELSE 'Expert' END) AS ClassLevel FROM Guest
-LEFT JOIN Level ON (Guest.ID = Level.GuestID)
-LEFT JOIN Class ON (Level.ClassID = Class.ID)
+INNER JOIN Level ON (Guest.ID = Level.GuestID)
+INNER JOIN Class ON (Level.ClassID = Class.ID)
 WHERE Level >5 AND Class = 'AXE Thrower'
 ORDER BY Name ASC;
 
-
+/*Class 3 Lab without and with table variable*/
 select CONCAT('CREATE TABLE',' ', 'Taverns', ' (')
 UNION ALL
 select CONCAT(COLUMN_NAME, ' ', DATA_TYPE, ',')
@@ -37,3 +40,56 @@ FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Tavern'
 AND CHARACTER_MAXIMUM_LENGTH is NOT NULL
 UNION ALL
 select (');');
+
+SELECT
+CONCAT('CREATE TABLE ',TABLE_NAME, ' (') as queryPiece
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_NAME = 'Tavern'
+UNION ALL
+SELECT CONCAT(cols.COLUMN_NAME, ' ', cols.DATA_TYPE,
+(CASE WHEN CHARACTER_MAXIMUM_LENGTH IS NOT NULL
+Then CONCAT('(', CAST(CHARACTER_MAXIMUM_LENGTH as varchar(100)),
+')') Else '' END), ',') as queryPiece FROM
+INFORMATION_SCHEMA.COLUMNS as cols WHERE
+TABLE_NAME = 'Tavern'
+UNION ALL
+SELECT ')';
+
+/*Class 4 Lab*/
+SELECT
+CONCAT('CREATE TABLE ',TABLE_NAME, ' (') as queryPiece
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_NAME = 'Taverns'
+UNION ALL
+SELECT CONCAT(cols.COLUMN_NAME, ' ', cols.DATA_TYPE,
+(
+CASE WHEN CHARACTER_MAXIMUM_LENGTH IS NOT NULL
+Then CONCAT
+('(', CAST(CHARACTER_MAXIMUM_LENGTH as varchar(100)), ')')
+Else ''
+END)
+,
+CASE WHEN refConst.CONSTRAINT_NAME IS NOT NULL
+Then
+(CONCAT(' FOREIGN KEY REFERENCES ', constKeys.TABLE_NAME, '(', constKeys.COLUMN_NAME, ')'))
+Else ''
+END
+,
+CASE WHEN refConst.CONSTRAINT_NAME IS NULL AND keys.COLUMN_NAME IS NOT NULL
+Then
+' PRIMARY KEY'
+Else ''
+END,
+',' )as queryPiece FROM
+INFORMATION_SCHEMA.COLUMNS as cols
+LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE as keys ON
+(keys.TABLE_NAME = cols.TABLE_NAME and keys.COLUMN_NAME = cols.COLUMN_NAME)
+LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS as refConst ON
+(refConst.CONSTRAINT_NAME = keys.CONSTRAINT_NAME)
+LEFT JOIN
+(SELECT DISTINCT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE) as constKeys
+ON (constKeys.CONSTRAINT_NAME = refConst.UNIQUE_CONSTRAINT_NAME)
+WHERE cols.TABLE_NAME = 'Tavern'
+UNION ALL
+SELECT ')';

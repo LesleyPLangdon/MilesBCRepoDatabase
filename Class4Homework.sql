@@ -36,21 +36,62 @@ SELECT (Guest.Name), COUNT(Guest.Name), (Class.Class), (Level.Level) FROM Guest
 LEFT JOIN Level ON (Guest.ID = Level.GuestID)
 LEFT JOIN Class ON (Level.ClassID = Class.ID)
 GROUP BY Guest.Name HAVING COUNT(Name)>1;*/
-SELECT (Name), COUNT(Name), (Level.Level) FROM Guest
-JOIN Level ON (Guest.ID = Level.GuestID)
+
+SELECT g.Name, c.Class, l.Level
+FROM Guest g
+JOIN Level l ON g.ID = l.GuestID
+JOIN Class c on l.ClassID = c.ID,
+(SELECT COUNT(Name) as NumLevels
+FROM Guest)
+WHERE NumLevels > 1;
+
+
+(SELECT GuestID, MAX(Level) as MaxLevel
+FROM Level
+GROUP BY GuestID) as MaxClasses
+WHERE l.Level = MaxClasses.MaxLevel AND l.GuestID = MaxClasses.GuestID;
+
+
+
+SELECT (Name), (Level.Level) FROM Guest
+JOIN [Level] ON (Guest.ID = Level.GuestID)
+GROUP BY Name
 HAVING COUNT(Name) > 1;
 
+SELECT (Name), (Level.Level) FROM Guest
+LEFT JOIN Level ON (Guest.ID = Level.GuestID);
+HAVING COUNT(Name) > 1;
 
-SELECT 
+SELECT * FROM Level;
 
 /*6. Write a query that returns guests with 2 or more classes with levels higher than 5*/
 
 
 /*7. Write a query that returns guests with ONLY their highest level class*/
+SELECT g.Name, c.Class, l.Level
+FROM Guest g
+JOIN Level l ON g.ID = l.GuestID
+JOIN Class c on l.ClassID = c.ID,
+(SELECT GuestID, MAX(Level) as MaxLevel
+FROM Level
+GROUP BY GuestID) as MaxClasses
+WHERE l.Level = MaxClasses.MaxLevel AND l.GuestID = MaxClasses.GuestID;
+
 
 
 
 /*8. Write a query that returns guests that stay within a date range. Please remember that guests can stay for more than one night AND not all of the dates they stay have to be in that range (just some of them)*/
+use MilesBootcamp;
+SELECT * FROM RoomSales;
+DECLARE
+@DateStart date = '2021-01-06',
+@DateEnd date = '2021-01-16'
+
+Select g.Name
+FROM Guest g
+	Inner Join RoomSales rs on g.ID = rs.GuestID
+WHERE (CheckInDate >= @DateStart AND CheckInDate <= @DateEnd) OR
+(CheckOutDate >= @DateStart AND CheckOutDate <= @DateEnd);
 
 
 /*9. Using the additional queries provided, take the lab’s SELECT ‘CREATE query’ and add any IDENTITY and PRIMARY KEY constraints to it.*/

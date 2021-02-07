@@ -32,11 +32,15 @@ SELECT DISTINCT Name From Guest;
 /*5. Write a query that returns all guests ordered by name (ascending) Use ASC or DESC after your ORDER BY [col]*/
 SELECT * FROM Guest ORDER BY Name ASC;
 
-/*6. Write a query that returns the top 10 highest price sales
-SELECT TOP 10 * FROM */
+/*6. Write a query that returns the top 10 highest price sales*/
+use FantasyTavern;
+/*Select * FROM ServicesSales;*/
+SELECT TOP 10 * FROM ServicesSales
+ORDER BY (Price * QuantityPurchased) DESC;
 
 /*7. Write a query to return all the values stored in all Lookup Tables - 
 Lookup tables are the tables we reference typically with just an ID and a name. This should be a dynamic combining of all of the tables*/
+use MilesBootcamp;
 SELECT * FROM Location 
 UNION ALL
 SELECT * FROM Role
@@ -45,14 +49,15 @@ SELECT * FROM Status
 UNION ALL
 SELECT * FROM Class;
 
+
+
 /*8. Write a query that returns Guest Classes with Levels and Generate a new column with a label for their level grouping (lvl 1-10, 10-20, etc)*/
-SELECT * FROM Level;
+/*SELECT * FROM Level;*/
 SELECT (CASE WHEN [Level] = 1 THEN 'Novice'
 WHEN [Level] > 1 and [Level] < 5 THEN 'Intermediate'
 ELSE 'Expert' END) AS ClassLevel, * FROM [Level];
 /*9. Write a series of INSERT commands that will insert the statuses of one table into another of your choosing using SELECT statements */
-select sysObj.name, sysCol.name, *
-from sys.objects sysObj inner join sys.columns sysCol on sysObj.object_id = sysCol.object_id
+
 
 SELECT * FROM dbo.Level;
 
