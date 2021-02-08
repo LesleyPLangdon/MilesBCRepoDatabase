@@ -37,11 +37,12 @@ LEFT JOIN Level ON (Guest.ID = Level.GuestID)
 LEFT JOIN Class ON (Level.ClassID = Class.ID)
 GROUP BY Guest.Name HAVING COUNT(Name)>1;*/
 
+DECLARE @NumLevels,
 SELECT g.Name, c.Class, l.Level
 FROM Guest g
 JOIN Level l ON g.ID = l.GuestID
 JOIN Class c on l.ClassID = c.ID,
-(SELECT COUNT(Name) as NumLevels
+(SELECT @NumLevels = COUNT(g.Name)
 FROM Guest)
 WHERE NumLevels > 1;
 
@@ -62,7 +63,7 @@ SELECT (Name), (Level.Level) FROM Guest
 LEFT JOIN Level ON (Guest.ID = Level.GuestID);
 HAVING COUNT(Name) > 1;
 
-SELECT * FROM Level;
+SELECT COUNT(*) FROM Tavern;
 
 /*6. Write a query that returns guests with 2 or more classes with levels higher than 5*/
 
