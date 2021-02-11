@@ -78,6 +78,17 @@ FROM Level
 GROUP BY GuestID) as MaxClasses
 WHERE l.Level = MaxClasses.MaxLevel AND l.GuestID = MaxClasses.GuestID;
 
+/*for reference only, does not match up with either schema*/
+/*SELECT GuestName, ClassName, BestClass.ClassLevel
+FROM Classes c1
+JOIN
+(SELECT g.GuestName,
+	(SELECT ClassID FROM GuestClasses WHERE classlevel = MAX(gc.ClassLevel) and g.GuestID = GuestID) as 'ClassID',
+	MAX(gc.ClassLevel) as 'ClassLevel'
+FROM Guests g
+	JOIN GuestClasses gc ON g.GuestID = gc.GuestID
+	JOIN Classes c on gc.ClassID = c.ID
+GROUP BY GuestName, g.GuestID) as BestClass ON c1.ID = BestClass.ClassID;*/
 
 
 
