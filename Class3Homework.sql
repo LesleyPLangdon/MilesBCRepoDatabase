@@ -57,7 +57,8 @@ SELECT (CASE WHEN [Level] = 1 THEN 'Novice'
 WHEN [Level] > 1 and [Level] < 5 THEN 'Intermediate'
 ELSE 'Expert' END) AS ClassLevel, * FROM [Level];
 /*9. Write a series of INSERT commands that will insert the statuses of one table into another of your choosing using SELECT statements */
-
+select sysObj.name, sysCol.name, *
+from sys.objects sysObj inner join sys.columns sysCol on sysObj.object_id = sysCol.object_id
 
 SELECT * FROM dbo.Level;
 
